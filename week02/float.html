@@ -6,7 +6,7 @@
   memory[0] = a;
 
   const intarr = new Uint8Array(memory.buffer);
-  
+
   for (let i = 0; i < 8; i++) {
     let s = intarr[i].toString(2);
     console.log(new Array(9 - s.length).join("") + s);
