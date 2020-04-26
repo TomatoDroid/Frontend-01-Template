@@ -1,7 +1,12 @@
+function bin2Hex(str) {
+  return Number(`0b${str}`).toString(16);
+}
+
 function toUTF8(item) {
   const binary = item.codePointAt().toString(2);
   if (binary.length < 8) {
-    return binary.padStart(8, "0");
+    debugger
+    return bin2Hex(binary.padStart(8, "0"));
   }
   const headers = ["0", "110", "1110", "11110"];
   const arr = [];
@@ -14,13 +19,17 @@ function toUTF8(item) {
       arr.unshift(`${header}${sub.padStart(8 - header.length, "0")}`);
     }
   }
-  return arr.join(" ");
+  return arr
+    .map((item) => {
+      return bin2Hex(item);
+    })
+    .join(" ");
 }
 
 function utf8Encoding(str) {
   return Array.from(str).map((item) => toUTF8(item));
 }
-console.log(utf8Encoding("严"));
+console.log(utf8Encoding("臻"));
 // utf8和unicode关系 http://www.ruanyifeng.com/blog/2007/10/ascii_unicode_and_utf-8.html
 
 // Unicode符号范围     |        UTF-8编码方式
