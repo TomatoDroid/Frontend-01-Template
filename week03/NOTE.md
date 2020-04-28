@@ -1,5 +1,91 @@
 # 每周总结可以写在这里
 
+## 第一节
+
+### Expressions
+
+- #### Member
+
+  - `a.b`
+  - `a[b]`
+  - `` foo`xxx${xx}` 模板字符串 ``
+  - super.b
+  - super['b']
+  - new.target 判断一个类是不是 new 出来的
+  - new Foo() 优先级高于 new Foo
+
+- #### Referance
+
+  - delete
+  - assign
+
+- #### Call
+
+  - foo()
+  - super()
+  - foo()['b']
+  - foo().b
+  - foo()`abc`
+
+- #### Left Handside & Right Handside
+
+- #### Update
+
+  - ++ a
+  - a ++
+  - -- a
+  - a --
+
+- #### Unary 单目运算符
+
+  - delete a.b
+  - void foo()
+  - typeof a
+  - +a
+  - -a
+  - ~a
+  - !a
+  - await a
+
+- #### Exponental
+
+  - \*\*
+
+- #### Multiplicative
+
+  - `* / %`
+
+- #### Additive
+
+  - `+ -`
+
+- #### Shift
+
+  - << >> >>>
+
+- #### Relationship
+
+  - < > <= >= instanceof in
+
+- #### Equality
+
+  - ==
+  - !=
+  - ===
+  - !==
+
+- #### Bitwise
+
+  - & ^ |
+
+- #### Logical
+
+  - &&
+  - ||
+
+- #### Conditional
+  - `? :`
+
 ## 第二节
 
 ### Complection Record

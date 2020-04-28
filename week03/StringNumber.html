@@ -1,0 +1,63 @@
+<script>
+  /**
+   *
+   * @param {*} string
+   * @param {*} hex 进制
+   */
+  function convertStringToNumber(string, hex) {
+    if (arguments.length < 2) {
+      hex = 10;
+    }
+    const chars = string.split("");
+    let number = 0;
+
+    let i = 0;
+    while (i < chars.length && chars[i] !== ".") {
+      number = number * hex;
+      number += chars[i].codePointAt(0) - "0".codePointAt(0);
+      i++;
+    }
+    if (chars[i] === ".") i++;
+    let fraction = 1;
+    while (i < chars.length && chars[i] !== "e") {
+      fraction = fraction / hex;
+      number += (chars[i].codePointAt(0) - "0".codePointAt(0)) * fraction;
+      i++;
+    }
+    if (chars[i] === "e") i++;
+    // e
+    let index = 0;
+    let indexNumber = 0;
+    while (i < chars.length) {
+      indexNumber = indexNumber * 10;
+      indexNumber += chars[i].codePointAt(0) - "0".codePointAt(0);
+      i++;
+    }
+    let j = 0;
+    while (j < indexNumber) {
+      number *= 10;
+      j++;
+    }
+    return number;
+  }
+  // console.log(convertStringToNumber("123.321e10"));
+  /**
+   *
+   * @param {*} number
+   * @param {*} hex 进制
+   */
+  function convertNumberToString(number, hex) {
+    if (arguments.length < 2) {
+      hex = 10;
+    }
+    let interger = Math.floor(number);
+    let fraction = number - interger;
+    let string = "";
+    while (interger > 0) {
+      string = String(interger % hex) + string;
+      interger = Math.floor(interger / hex);
+    }
+    return string;
+  }
+  console.log(convertNumberToString(123.123));
+</script>
