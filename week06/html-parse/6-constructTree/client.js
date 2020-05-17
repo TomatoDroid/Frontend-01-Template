@@ -1,4 +1,5 @@
 const net = require("net");
+const parseHTML = require("./parser");
 
 class Request {
   // methods, url = host + port + path
@@ -104,7 +105,6 @@ class ResponseParser {
   }
 
   receive(string) {
-    console.log(JSON.stringify(string));
     for (let i = 0; i < string.length; i++) {
       this.receiveChar(string.charAt(i));
     }
@@ -173,8 +173,6 @@ class TrunkBodyParser {
   }
 
   receiveChar(char) {
-    debugger;
-    console.log(this.current + "---" + JSON.stringify(char));
     if (this.current === this.WAITING_LENGTH) {
       if (char === "\r") {
         if (this.length === 0) {
@@ -225,7 +223,7 @@ void (async function () {
     },
   });
   const response = await request.send();
-  console.log(response);
+  const dom = parseHTML(response.body);
 })();
 
 // const client = net.createConnection(
