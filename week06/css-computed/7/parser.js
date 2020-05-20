@@ -29,7 +29,7 @@ function match(element, selector) {
     }
   } else {
     if (element.tagName === selector) {
-      return false;
+      return true;
     }
   }
   return false;
@@ -63,6 +63,7 @@ function compare(sp1, sp2) {
   return sp1[3] - sp2[3];
 }
 
+// 给元素加上css样式
 function computeCSS(element) {
   let elements = stack.slice().reverse();
   if (!element.computedStyle) {
@@ -84,7 +85,7 @@ function computeCSS(element) {
       matched = true;
     }
     if (matched) {
-      let sp = specificity(rule.selector[0]);
+      let sp = specificity(rule.selectors[0]);
       let computedStyle = element.computedStyle;
       for (let declaration of rule.declarations) {
         if (!computedStyle[declaration.property]) {

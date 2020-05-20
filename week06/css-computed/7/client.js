@@ -224,6 +224,7 @@ void (async function () {
   });
   const response = await request.send();
   const dom = parseHTML(response.body);
+  console.log(dom);
 })();
 
 // const client = net.createConnection(
