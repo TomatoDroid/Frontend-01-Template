@@ -14,7 +14,7 @@ const server = http.createServer((req, res) => {
         width: 500px;
         height: 300px;
         display: flex;
-        background-color: rgb(0, 0, 0);
+        background-color: rgb(123, 123, 0);
     }
     #container #myId {
         width: 200px;
@@ -23,7 +23,7 @@ const server = http.createServer((req, res) => {
     }
     #container .c1 {
         flex: 1;
-        background-color: rgb(0, 255, 0);
+        background-color: rgb(0, 255, 125);
     }
     </style>
 </head>

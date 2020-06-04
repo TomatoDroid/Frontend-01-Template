@@ -227,7 +227,7 @@ void (async function () {
   const response = await request.send();
   const dom = parseHTML(response.body);
 
-  const viewport = images(500, 300);
+  const viewport = images(500, 400);
 
   render(viewport, dom.children[0].children[3].children[1]);
   viewport.save("viewport.jpg");
