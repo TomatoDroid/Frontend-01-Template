@@ -25,6 +25,25 @@
 ## HSL 与 HSV
 
 # 形状
+
 - border
 - box-shadow
 - border-radius
+
+# HTML
+
+- XML 与 SGML
+- DTD sgml 的角度完整描述 html
+  - nbsp no-break-space
+  - quot
+  - amp
+  - lt
+  - gt
+  - apos
+- namespace 可以使用那些标签
+
+- 语义
+- 图片底下的文字 可以使用 firure
+- dl
+  - dt define term
+  - dd define description
