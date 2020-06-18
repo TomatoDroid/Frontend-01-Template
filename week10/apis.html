@@ -196,6 +196,8 @@
     "print",
     "postMessage",
     "console",
+    "ApplicationCacheErrorEvent",
+    "caches",
   ];
   objects.forEach((o) => windowprops.add(o));
   names = names.filter((e) => !windowprops.has(e));
@@ -255,6 +257,7 @@
       "SharedWorkerGlobalScope",
       "Storage",
       "StorageEvent",
+      "StorageManager",
       "TextMetrics",
       "TextTrack",
       "TextTrackCue",
@@ -272,17 +275,31 @@
       "WorkerLocation",
       "WorkerNavigator",
       "SubmitEvent",
+      "btoa",
+      "atob",
+      "setTimeout",
+      "clearTimeout",
+      "setInterval",
+      "clearInterval",
+      "createImageBitmap",
+      "blur",
+      "sessionStorage",
+      "localStorage",
     ];
     objects.forEach((o) => interfaces.add(o));
 
     names = names.filter((e) => !interfaces.has(e));
   }
 
-  //http://www.ecma-international.org/ecma-402/5.0/index.html#Title
+  // https://notifications.spec.whatwg.org/
+
+  names = filterOut(names, ["Notification"]);
+
+  // http://www.ecma-international.org/ecma-402/5.0/index.html#Title
 
   names = names.filter((e) => e != "Intl");
 
-  //https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.15
+  // https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.15
 
   names = filterOut(names, [
     "WebGLVertexArrayObject",
@@ -340,6 +357,9 @@
     "WaveShaperNode",
     "ScriptProcessorNode",
     "AudioProcessingEvent",
+    "PeriodicSyncManager",
+    "RemotePlayback",
+    "VideoPlaybackQuality",
   ]);
 
   //https://encoding.spec.whatwg.org/#dom-textencoder
@@ -403,6 +423,7 @@
     "RTCDTMFToneChangeEvent",
     "RTCDTMFSender",
     "RTCCertificate",
+    "RTCIceTransport",
   ]);
 
   // https://w3c.github.io/mediacapture-image/#photocapabilities-section
@@ -411,7 +432,16 @@
 
   // https://w3c.github.io/mediacapture-main/#dfn-overconstrainederror
 
-  names = filterOut(names, ["OverconstrainedError"]);
+  names = filterOut(names, [
+    "OverconstrainedError",
+    "MediaDeviceInfo",
+    "MediaDevices",
+    "MediaKeyMessageEvent",
+    "MediaKeys",
+    "MediaKeySession",
+    "MediaKeyStatusMap",
+    "MediaKeySystemAccess",
+  ]);
 
   // https://webaudio.github.io/web-audio-api/#OfflineAudioContext
 
@@ -458,7 +488,12 @@
     "IDBDatabase",
     "IDBCursorWithValue",
     "IDBCursor",
+    "indexedDB",
   ]);
+
+  // https://dev.w3.org/html5/webdatabase/
+
+  names = filterOut(names, ["openDatabase"]);
 
   // https://w3c.github.io/geolocation-api/#position_error_interface
 
@@ -482,7 +517,7 @@
 
   names = filterOut(names, ["DecompressionStream", "CompressionStream"]);
 
-  // 废弃
+  // 废弃 非标准
 
   names = filterOut(names, [
     "DOMError",
@@ -492,15 +527,16 @@
     "defaultstatus",
     "captureEvents",
     "releaseEvents",
+    "find",
   ]);
 
   // https://www.w3.org/TR/WebCryptoAPI/#crypto-interface
 
-  names = filterOut(names, ["Crypto"]);
+  names = filterOut(names, ["Crypto", "crypto", "CryptoKey", "SubtleCrypto"]);
 
   // https://w3c.github.io/clipboard-apis/#dom-clipboard-write
 
-  names = filterOut(names, ["ClipboardItem", "ClipboardEvent"]);
+  names = filterOut(names, ["ClipboardItem", "ClipboardEvent", "Clipboard"]);
 
   // https://w3c.github.io/mediacapture-fromelement/#the-canvascapturemediastreamtrack
 
@@ -524,7 +560,7 @@
 
   // https://w3c.github.io/DOM-Parsing/#the-xmlserializer-interface
 
-  names = filterOut(names, ["XMLSerializer"]);
+  names = filterOut(names, ["XMLSerializer", "XSLTProcessor"]);
 
   // https://xhr.spec.whatwg.org/
 
@@ -607,13 +643,19 @@
 
   names = filterOut(names, ["Selection", "getSelection"]);
 
-  // https://w3c.github.io/webappsec-csp/2/#firing-securitypolicyviolationevent-events
-
-  names = filterOut(names, ["SecurityPolicyViolationEvent"]);
-
   // https://w3c.github.io/webappsec-secure-contexts/
 
-  names = filterOut(names, ["isSecureContext"]);
+  names = filterOut(names, [
+    "SecurityPolicyViolationEvent",
+    "isSecureContext",
+    "FeaturePolicy",
+    "TrustedHTML",
+    "TrustedScript",
+    "TrustedScriptURL",
+    "TrustedTypePolicy",
+    "TrustedTypePolicyFactory",
+    "trustedTypes",
+  ]);
 
   // https://svgwg.org/svg2-draft/types.html#InterfaceSVGUnitTypes
 
@@ -649,7 +691,15 @@
 
   // https://fetch.spec.whatwg.org/#response-class
 
-  names = filterOut(names, ["Response", "Request", "Headers"]);
+  names = filterOut(names, ["Response", "Request", "Headers", "fetch"]);
+
+  // https://wicg.github.io/background-fetch/
+
+  names = filterOut(names, [
+    "BackgroundFetchManager",
+    "BackgroundFetchRecord",
+    "BackgroundFetchRegistration",
+  ]);
 
   // https://drafts.csswg.org/resize-observer/#resize-observer-entry-interface
 
@@ -687,6 +737,10 @@
     "Performance",
     "performance",
   ]);
+
+  //https://w3c.github.io/ServiceWorker/#navigation-preload-manager
+
+  names = filterOut(names, ["NavigationPreloadManager"]);
 
   // https://drafts.csswg.org/cssom-view/#the-screen-interface
 
@@ -829,6 +883,207 @@
     "CSS",
     "CSSConditionRule",
   ]);
+
+  // https://www.w3.org/community/webassembly/
+
+  names = filterOut(names, ["WebAssembly"]);
+
+  // https://webaudio.github.io/web-midi-api/#midiaccess-interface
+
+  names = filterOut(names, [
+    "MIDIAccess",
+    "MIDIConnectionEvent",
+    "MIDIInput",
+    "MIDIInputMap",
+    "MIDIMessageEvent",
+    "MIDIOutput",
+    "MIDIOutputMap",
+    "MIDIPort",
+  ]);
+
+  // https://webaudio.github.io/web-midi-api/#midiaccess-interface
+
+  names = filterOut(names, ["MediaMetadata", "MediaSession", "MediaSource"]);
+
+  // https://www.w3.org/TR/payment-handler/
+
+  names = filterOut(names, [
+    "PaymentInstruments",
+    "PaymentManager",
+    "PaymentRequestUpdateEvent",
+    "PushManager",
+    "PushSubscription",
+    "PushSubscriptionOptions",
+  ]);
+
+  // https://w3c.github.io/payment-request/#paymentaddress-interface
+
+  names = filterOut(names, [
+    "PaymentMethodChangeEvent",
+    "PaymentAddress",
+    "PaymentRequest",
+    "PaymentResponse",
+  ]);
+
+  // https://wicg.github.io/webusb/#configurations
+
+  names = filterOut(names, [
+    "USB",
+    "USBAlternateInterface",
+    "USBConfiguration",
+    "USBConnectionEvent",
+    "USBDevice",
+    "USBEndpoint",
+    "USBInterface",
+    "USBInTransferResult",
+    "USBIsochronousInTransferPacket",
+    "USBIsochronousInTransferResult",
+    "USBIsochronousOutTransferPacket",
+    "USBIsochronousOutTransferResult",
+    "USBOutTransferResult",
+  ]);
+
+  // https://webbluetoothcg.github.io/web-bluetooth/#bluetoothdevice
+
+  names = filterOut(names, [
+    "Bluetooth",
+    "BluetoothCharacteristicProperties",
+    "BluetoothDevice",
+    "BluetoothRemoteGATTCharacteristic",
+    "BluetoothRemoteGATTDescriptor",
+    "BluetoothRemoteGATTServer",
+    "BluetoothRemoteGATTService",
+    "BluetoothUUID",
+  ]);
+
+  // https://w3c.github.io/webauthn/#iface-pkcredential
+
+  names = filterOut(names, [
+    "PublicKeyCredential",
+    "AuthenticatorAssertionResponse",
+    "AuthenticatorAttestationResponse",
+    "AuthenticatorResponse",
+  ]);
+
+  // https://immersive-web.github.io/webxr/#xrboundedreferencespace-interface
+
+  names = filterOut(names, [
+    "XRBoundedReferenceSpace",
+    "XRFrame",
+    "XRInputSource",
+    "XRInputSourceArray",
+    "XRInputSourceEvent",
+    "XRInputSourcesChangeEvent",
+    "XRPose",
+    "XRReferenceSpace",
+    "XRReferenceSpaceEvent",
+    "XRRenderState",
+    "XRRigidTransform",
+    "XRSession",
+    "XRSessionEvent",
+    "XRSpace",
+    "XRSystem",
+    "XRView",
+    "XRViewerPose",
+    "XRViewport",
+    "XRWebGLLayer",
+    "XRHitTestResult",
+    "XRHitTestSource",
+    "XRRay",
+    "XRTransientInputHitTestResult",
+    "XRTransientInputHitTestSource",
+    "XRDOMOverlayState",
+  ]);
+
+  // https://w3c.github.io/presentation-api/#interface-presentationconnectioncloseevent
+
+  names = filterOut(names, [
+    "PresentationAvailability",
+    "PresentationConnection",
+    "PresentationConnectionAvailableEvent",
+    "PresentationConnectionCloseEvent",
+    "PresentationConnectionList",
+    "PresentationReceiver",
+    "PresentationRequest",
+    "Presentation",
+  ]);
+
+  // https://w3c.github.io/presentation-api/#interface-presentationconnectioncloseevent
+
+  names = filterOut(names, [
+    "ServiceWorker",
+    "ServiceWorkerContainer",
+    "ServiceWorkerRegistration",
+    "Cache",
+    "CacheStorage",
+  ]);
+
+  // https://w3c.github.io/webappsec-credential-management/
+
+  names = filterOut(names, [
+    "Credential",
+    "CredentialsContainer",
+    "FederatedCredential",
+    "PasswordCredential",
+  ]);
+
+  // https://wicg.github.io/speech-api/#utterance-attributes
+
+  names = filterOut(names, [
+    "SpeechSynthesisErrorEvent",
+    "SpeechSynthesisEvent",
+    "SpeechSynthesisUtterance",
+    "speechSynthesis",
+  ]);
+
+  // https://www.w3.org/TR/permissions/
+
+  names = filterOut(names, ["Permissions", "PermissionStatus"]);
+
+  // https://wicg.github.io/web-locks/#api-lock
+
+  names = filterOut(names, ["Lock", "LockManager"]);
+
+  // https://www.w3.org/TR/generic-sensor/#the-sensor-interface
+
+  names = filterOut(names, [
+    "Sensor",
+    "SensorErrorEvent",
+    "AbsoluteOrientationSensor",
+    "LinearAccelerationSensor",
+    "OrientationSensor",
+    "RelativeOrientationSensor",
+    "Gyroscope",
+    "Accelerometer",
+  ]);
+
+  // https://w3c.github.io/deviceorientation/#devicemotionevent
+
+  names = filterOut(names, [
+    "DeviceMotionEvent",
+    "DeviceMotionEventAcceleration",
+    "DeviceMotionEventRotationRate",
+    "DeviceOrientationEvent",
+  ]);
+
+  // https://w3c.github.io/picture-in-picture/
+
+  names = filterOut(names, [
+    "EnterPictureInPictureEvent",
+    "PictureInPictureWindow",
+  ]);
+
+  // https://drafts.css-houdini.org/worklets/#worklet
+
+  names = filterOut(names, ["Worklet"]);
+
+  // https://wicg.github.io/keyboard-map/#keyboard-interface
+
+  names = filterOut(names, ["Keyboard", "KeyboardLayoutMap"]);
+
+  // https://wicg.github.io/shape-detection-api/
+
+  names = filterOut(names, ["BarcodeDetector"]);
 
   console.log(names);
 </script>
