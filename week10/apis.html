@@ -1,98 +1,834 @@
 <script>
-let names = Object.getOwnPropertyNames(window);
+  let names = Object.getOwnPropertyNames(window);
 
-function filterOut(names, props) {
+  function filterOut(names, props) {
     let set = new Set();
-    props.forEach(o => set.add(o));
-    return names.filter(e => !set.has(e));
-}
+    props.forEach((o) => set.add(o));
+    return names.filter((e) => !set.has(e));
+  }
 
-// ECMA 262
-{
+  // ECMA 262
+  {
     let js = new Set();
-    let objects = ["globalThis", "console", "BigInt", "BigInt64Array", "BigUint64Array", "Infinity", "NaN", "undefined", "eval", "isFinite", "isNaN", "parseFloat", "parseInt", "decodeURI", "decodeURIComponent", "encodeURI", "encodeURIComponent", "Array", "Date", "RegExp", "Promise", "Proxy", "Map", "WeakMap", "Set", "WeakSet", "Function", "Boolean", "String", "Number", "Symbol", "Object", "Error", "EvalError", "RangeError", "ReferenceError", "SyntaxError", "TypeError", "URIError", "ArrayBuffer", "SharedArrayBuffer", "DataView", "Float32Array", "Float64Array", "Int8Array", "Int16Array", "Int32Array", "Uint8Array", "Uint16Array", "Uint32Array", "Uint8ClampedArray", "Atomics", "JSON", "Math", "Reflect", "escape", "unescape"];
-    objects.forEach(o => js.add(o));
-    names = names.filter(e => !js.has(e));
+    let objects = [
+      "globalThis",
+      "console",
+      "BigInt",
+      "BigInt64Array",
+      "BigUint64Array",
+      "Infinity",
+      "NaN",
+      "undefined",
+      "eval",
+      "isFinite",
+      "isNaN",
+      "parseFloat",
+      "parseInt",
+      "decodeURI",
+      "decodeURIComponent",
+      "encodeURI",
+      "encodeURIComponent",
+      "Array",
+      "Date",
+      "RegExp",
+      "Promise",
+      "Proxy",
+      "Map",
+      "WeakMap",
+      "Set",
+      "WeakSet",
+      "Function",
+      "Boolean",
+      "String",
+      "Number",
+      "Symbol",
+      "Object",
+      "Error",
+      "EvalError",
+      "RangeError",
+      "ReferenceError",
+      "SyntaxError",
+      "TypeError",
+      "URIError",
+      "ArrayBuffer",
+      "SharedArrayBuffer",
+      "DataView",
+      "Float32Array",
+      "Float64Array",
+      "Int8Array",
+      "Int16Array",
+      "Int32Array",
+      "Uint8Array",
+      "Uint16Array",
+      "Uint32Array",
+      "Uint8ClampedArray",
+      "Atomics",
+      "JSON",
+      "Math",
+      "Reflect",
+      "escape",
+      "unescape",
+    ];
+    objects.forEach((o) => js.add(o));
+    names = names.filter((e) => !js.has(e));
+  }
 
-}
-
-
-names = names.filter( e => {
-    try { 
-        return !(window[e].prototype instanceof Node)
-    } catch(err) {
+  names = names
+    .filter((e) => {
+      try {
+        return !(window[e].prototype instanceof Node);
+      } catch (err) {
         return true;
-    }
-}).filter( e => e != "Node");
+      }
+    })
+    .filter((e) => e != "Node");
 
+  names = names.filter((e) => !e.match(/^on/));
 
-names = names.filter( e => !e.match(/^on/))
+  names = names.filter((e) => !e.match(/^webkit/));
 
-names = names.filter( e => !e.match(/^webkit/))
+  names = names.filter((e) => !e.match(/^WebKit/));
 
+  // https://html.spec.whatwg.org/#window
 
-//https://html.spec.whatwg.org/#window
+  let js = new Set();
+  let objects = [
+    "BigInt",
+    "BigInt64Array",
+    "BigUint64Array",
+    "Infinity",
+    "NaN",
+    "undefined",
+    "eval",
+    "isFinite",
+    "isNaN",
+    "parseFloat",
+    "parseInt",
+    "decodeURI",
+    "decodeURIComponent",
+    "encodeURI",
+    "encodeURIComponent",
+    "Array",
+    "Date",
+    "RegExp",
+    "Promise",
+    "Proxy",
+    "Map",
+    "WeakMap",
+    "Set",
+    "WeakSet",
+    "Function",
+    "Boolean",
+    "String",
+    "Number",
+    "Symbol",
+    "Object",
+    "Error",
+    "EvalError",
+    "RangeError",
+    "ReferenceError",
+    "SyntaxError",
+    "TypeError",
+    "URIError",
+    "ArrayBuffer",
+    "SharedArrayBuffer",
+    "DataView",
+    "Float32Array",
+    "Float64Array",
+    "Int8Array",
+    "Int16Array",
+    "Int32Array",
+    "Uint8Array",
+    "Uint16Array",
+    "Uint32Array",
+    "Uint8ClampedArray",
+    "Atomics",
+    "JSON",
+    "Math",
+    "Reflect",
+    "escape",
+    "unescape",
+    "HTMLOptionsCollection",
+    "HTMLFormControlsCollection",
+    "HTMLCollection",
+    "ElementInternals",
+    "personalbar",
+    "queueMicrotask",
+    "requestAnimationFrame",
+    "cancelAnimationFrame",
+  ];
+  objects.forEach((o) => js.add(o));
+  names = names.filter((e) => !js.has(e));
 
-{
-    let names = Object.getOwnPropertyNames(window)
-    let js = new Set();
-    let objects = ["BigInt", "BigInt64Array", "BigUint64Array", "Infinity", "NaN", "undefined", "eval", "isFinite", "isNaN", "parseFloat", "parseInt", "decodeURI", "decodeURIComponent", "encodeURI", "encodeURIComponent", "Array", "Date", "RegExp", "Promise", "Proxy", "Map", "WeakMap", "Set", "WeakSet", "Function", "Boolean", "String", "Number", "Symbol", "Object", "Error", "EvalError", "RangeError", "ReferenceError", "SyntaxError", "TypeError", "URIError", "ArrayBuffer", "SharedArrayBuffer", "DataView", "Float32Array", "Float64Array", "Int8Array", "Int16Array", "Int32Array", "Uint8Array", "Uint16Array", "Uint32Array", "Uint8ClampedArray", "Atomics", "JSON", "Math", "Reflect", "escape", "unescape"];
-    objects.forEach(o => js.add(o));
-    names = names.filter(e => !js.has(e));
+  let windowprops = new Set();
+  objects = [
+    "window",
+    "self",
+    "document",
+    "name",
+    "location",
+    "history",
+    "customElements",
+    "locationbar",
+    "menubar",
+    " personalbar",
+    "scrollbars",
+    "statusbar",
+    "toolbar",
+    "status",
+    "close",
+    "closed",
+    "stop",
+    "focus",
+    " blur",
+    "frames",
+    "length",
+    "top",
+    "opener",
+    "parent",
+    "frameElement",
+    "open",
+    "navigator",
+    "applicationCache",
+    "alert",
+    "confirm",
+    "prompt",
+    "print",
+    "postMessage",
+    "console",
+  ];
+  objects.forEach((o) => windowprops.add(o));
+  names = names.filter((e) => !windowprops.has(e));
 
-    names = names.filter( e => {
-        try { 
-            return !(window[e].prototype instanceof Node)
-        } catch(err) {
-            return true;
-        }
-    }).filter( e => e != "Node")
+  //https://html.spec.whatwg.org/
 
-    let windowprops = new Set();
-    objects = ["window", "self", "document", "name", "location", "history", "customElements", "locationbar", "menubar", " personalbar", "scrollbars", "statusbar", "toolbar", "status", "close", "closed", "stop", "focus", " blur", "frames", "length", "top", "opener", "parent", "frameElement", "open", "navigator", "applicationCache", "alert", "confirm", "prompt", "print", "postMessage", "console"];
-    objects.forEach(o => windowprops.add(o));
-    names = names.filter(e => !windowprops.has(e));
-}
-
-//https://html.spec.whatwg.org/
-
-{
+  {
     let interfaces = new Set();
-    objects = ["ApplicationCache", "AudioTrack", "AudioTrackList", "BarProp", "BeforeUnloadEvent", "BroadcastChannel", "CanvasGradient", "CanvasPattern", "CanvasRenderingContext2D", "CloseEvent", "CustomElementRegistry", "DOMStringList", "DOMStringMap", "DataTransfer", "DataTransferItem", "DataTransferItemList", "DedicatedWorkerGlobalScope", "Document", "DragEvent", "ErrorEvent", "EventSource", "External", "FormDataEvent", "HTMLAllCollection", "HashChangeEvent", "History", "ImageBitmap", "ImageBitmapRenderingContext", "ImageData", "Location", "MediaError", "MessageChannel", "MessageEvent", "MessagePort", "MimeType", "MimeTypeArray", "Navigator", "OffscreenCanvas", "OffscreenCanvasRenderingContext2D", "PageTransitionEvent", "Path2D", "Plugin", "PluginArray", "PopStateEvent", "PromiseRejectionEvent", "RadioNodeList", "SharedWorker", "SharedWorkerGlobalScope", "Storage", "StorageEvent", "TextMetrics", "TextTrack", "TextTrackCue", "TextTrackCueList", "TextTrackList", "TimeRanges", "TrackEvent", "ValidityState", "VideoTrack", "VideoTrackList", "WebSocket", "Window", "Worker", "WorkerGlobalScope", "WorkerLocation", "WorkerNavigator"];
-    objects.forEach(o => interfaces.add(o));
+    objects = [
+      "ApplicationCache",
+      "AudioTrack",
+      "AudioTrackList",
+      "BarProp",
+      "BeforeUnloadEvent",
+      "BroadcastChannel",
+      "CanvasGradient",
+      "CanvasPattern",
+      "CanvasRenderingContext2D",
+      "CloseEvent",
+      "CustomElementRegistry",
+      "DOMStringList",
+      "DOMStringMap",
+      "DataTransfer",
+      "DataTransferItem",
+      "DataTransferItemList",
+      "DedicatedWorkerGlobalScope",
+      "Document",
+      "DragEvent",
+      "ErrorEvent",
+      "EventSource",
+      "External",
+      "FormDataEvent",
+      "HTMLAllCollection",
+      "HashChangeEvent",
+      "History",
+      "ImageBitmap",
+      "ImageBitmapRenderingContext",
+      "ImageData",
+      "Location",
+      "MediaError",
+      "MessageChannel",
+      "MessageEvent",
+      "MessagePort",
+      "MimeType",
+      "MimeTypeArray",
+      "Navigator",
+      "OffscreenCanvas",
+      "OffscreenCanvasRenderingContext2D",
+      "PageTransitionEvent",
+      "Path2D",
+      "Plugin",
+      "PluginArray",
+      "PopStateEvent",
+      "PromiseRejectionEvent",
+      "RadioNodeList",
+      "SharedWorker",
+      "SharedWorkerGlobalScope",
+      "Storage",
+      "StorageEvent",
+      "TextMetrics",
+      "TextTrack",
+      "TextTrackCue",
+      "TextTrackCueList",
+      "TextTrackList",
+      "TimeRanges",
+      "TrackEvent",
+      "ValidityState",
+      "VideoTrack",
+      "VideoTrackList",
+      "WebSocket",
+      "Window",
+      "Worker",
+      "WorkerGlobalScope",
+      "WorkerLocation",
+      "WorkerNavigator",
+      "SubmitEvent",
+    ];
+    objects.forEach((o) => interfaces.add(o));
 
-    names = names.filter(e => !interfaces.has(e));
-}
+    names = names.filter((e) => !interfaces.has(e));
+  }
 
-//http://www.ecma-international.org/ecma-402/5.0/index.html#Title
+  //http://www.ecma-international.org/ecma-402/5.0/index.html#Title
 
-names = names.filter(e => e != "Intl")
+  names = names.filter((e) => e != "Intl");
 
-//https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.15
+  //https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.15
 
-names = filterOut(names, ["WebGLVertexArrayObject","WebGLTransformFeedback","WebGLSync","WebGLSampler","WebGLQuery","WebGL2RenderingContext","WebGLContextEvent","WebGLObject", "WebGLBuffer", "WebGLFramebuffer", "WebGLProgram", "WebGLRenderbuffer", "WebGLShader", "WebGLTexture", "WebGLUniformLocation", "WebGLActiveInfo", "WebGLShaderPrecisionFormat", "WebGLRenderingContext"]);
+  names = filterOut(names, [
+    "WebGLVertexArrayObject",
+    "WebGLTransformFeedback",
+    "WebGLSync",
+    "WebGLSampler",
+    "WebGLQuery",
+    "WebGL2RenderingContext",
+    "WebGLContextEvent",
+    "WebGLObject",
+    "WebGLBuffer",
+    "WebGLFramebuffer",
+    "WebGLProgram",
+    "WebGLRenderbuffer",
+    "WebGLShader",
+    "WebGLTexture",
+    "WebGLUniformLocation",
+    "WebGLActiveInfo",
+    "WebGLShaderPrecisionFormat",
+    "WebGLRenderingContext",
+  ]);
 
-//https://www.w3.org/TR/webaudio/
+  //https://www.w3.org/TR/webaudio/
 
-names = filterOut(names, ["AudioContext", "AudioNode", "AnalyserNode", "AudioBuffer", "AudioBufferSourceNode", "AudioDestinationNode", "AudioParam", "AudioListener", "AudioWorklet", "AudioWorkletGlobalScope", "AudioWorkletNode", "AudioWorkletProcessor", "BiquadFilterNode", "ChannelMergerNode", "ChannelSplitterNode", "ConstantSourceNode", "ConvolverNode", "DelayNode", "DynamicsCompressorNode", "GainNode", "IIRFilterNode", "MediaElementAudioSourceNode", "MediaStreamAudioSourceNode", "MediaStreamTrackAudioSourceNode", "MediaStreamAudioDestinationNode", "PannerNode", "PeriodicWave", "OscillatorNode", "StereoPannerNode", "WaveShaperNode", "ScriptProcessorNode", "AudioProcessingEvent"]);
+  names = filterOut(names, [
+    "AudioContext",
+    "AudioNode",
+    "AnalyserNode",
+    "AudioBuffer",
+    "AudioBufferSourceNode",
+    "AudioDestinationNode",
+    "AudioParam",
+    "AudioListener",
+    "AudioWorklet",
+    "AudioWorkletGlobalScope",
+    "AudioWorkletNode",
+    "AudioWorkletProcessor",
+    "BiquadFilterNode",
+    "ChannelMergerNode",
+    "ChannelSplitterNode",
+    "ConstantSourceNode",
+    "ConvolverNode",
+    "DelayNode",
+    "DynamicsCompressorNode",
+    "GainNode",
+    "IIRFilterNode",
+    "MediaElementAudioSourceNode",
+    "MediaStreamAudioSourceNode",
+    "MediaStreamTrackAudioSourceNode",
+    "MediaStreamAudioDestinationNode",
+    "PannerNode",
+    "PeriodicWave",
+    "OscillatorNode",
+    "StereoPannerNode",
+    "WaveShaperNode",
+    "ScriptProcessorNode",
+    "AudioProcessingEvent",
+  ]);
 
-//https://encoding.spec.whatwg.org/#dom-textencoder
+  //https://encoding.spec.whatwg.org/#dom-textencoder
 
-names = filterOut(names, ["TextDecoder", "TextEncoder", "TextDecoderStream", "TextEncoderStream"]);
+  names = filterOut(names, [
+    "TextDecoder",
+    "TextEncoder",
+    "TextDecoderStream",
+    "TextEncoderStream",
+  ]);
 
+  //https://streams.spec.whatwg.org/#blqs-class
 
-//https://streams.spec.whatwg.org/#blqs-class
+  names = filterOut(names, [
+    "ReadableStream",
+    "ReadableStreamDefaultReader",
+    "ReadableStreamBYOBReader",
+    "ReadableStreamDefaultController",
+    "ReadableByteStreamController",
+    "ReadableStreamBYOBRequest",
+    "WritableStream",
+    "WritableStreamDefaultWriter",
+    "WritableStreamDefaultController",
+    "TransformStream",
+    "TransformStreamDefaultController",
+    "ByteLengthQueuingStrategy",
+    "CountQueuingStrategy",
+  ]);
 
-names = filterOut(names, ["ReadableStream", "ReadableStreamDefaultReader", "ReadableStreamBYOBReader", "ReadableStreamDefaultController", "ReadableByteStreamController", "ReadableStreamBYOBRequest", "WritableStream", "WritableStreamDefaultWriter", "WritableStreamDefaultController", "TransformStream", "TransformStreamDefaultController", "ByteLengthQueuingStrategy", "CountQueuingStrategy"]);
+  //https://wicg.github.io/BackgroundSync/spec/#sync-manager-interface
 
+  names = filterOut(names, ["SyncManager"]);
 
+  // https://w3c.github.io/media-source/#sourcebufferlist
 
-//https://wicg.github.io/BackgroundSync/spec/#sync-manager-interface
+  names = filterOut(names, ["SourceBufferList", "SourceBuffer"]);
 
-names = filterOut(names, ["SyncManager"]);
+  // https://w3c.github.io/screen-orientation/#screenorientation-interface
 
+  names = filterOut(names, ["ScreenOrientation"]);
 
+  // https://w3c.github.io/webrtc-pc/#constructors-3
 
-console.log(names.length);
+  names = filterOut(names, [
+    "RTCTrackEvent",
+    "RTCStatsReport",
+    "RTCSessionDescription",
+    "RTCSctpTransport",
+    "RTCRtpTransceiver",
+    "RTCRtpSender",
+    "RTCRtpReceiver",
+    "RTCPeerConnectionIceEvent",
+    "RTCPeerConnectionIceErrorEvent",
+    "RTCPeerConnection",
+    "RTCIceCandidate",
+    "RTCErrorEvent",
+    "RTCError",
+    "RTCDtlsTransport",
+    "RTCDataChannelEvent",
+    "RTCDataChannel",
+    "RTCDTMFToneChangeEvent",
+    "RTCDTMFSender",
+    "RTCCertificate",
+  ]);
 
+  // https://w3c.github.io/mediacapture-image/#photocapabilities-section
+
+  names = filterOut(names, ["PhotoCapabilities", "ImageCapture"]);
+
+  // https://w3c.github.io/mediacapture-main/#dfn-overconstrainederror
+
+  names = filterOut(names, ["OverconstrainedError"]);
+
+  // https://webaudio.github.io/web-audio-api/#OfflineAudioContext
+
+  names = filterOut(names, [
+    "OfflineAudioContext",
+    "OfflineAudioCompletionEvent",
+    "BaseAudioContext",
+    "AudioScheduledSourceNode",
+    "AudioParamMap",
+  ]);
+
+  // https://wicg.github.io/netinfo/#networkinformation-interface
+
+  names = filterOut(names, ["NetworkInformation"]);
+
+  // https://w3c.github.io/mediacapture-main/#dom-mediastreamtrackevent
+
+  names = filterOut(names, [
+    "MediaStreamTrackEvent",
+    "MediaStreamTrack",
+    "MediaStreamEvent",
+    "MediaStream",
+    "MediaSettingsRange",
+    "MediaRecorder",
+    "MediaEncryptedEvent",
+    "MediaCapabilities",
+  ]);
+
+  // 暂时归为mediacapture
+
+  names = filterOut(names, ["InputDeviceInfo"]);
+
+  // https://www.w3.org/TR/IndexedDB/#idbversionchangeevent
+
+  names = filterOut(names, [
+    "IDBVersionChangeEvent",
+    "IDBTransaction",
+    "IDBRequest",
+    "IDBOpenDBRequest",
+    "IDBObjectStore",
+    "IDBKeyRange",
+    "IDBIndex",
+    "IDBFactory",
+    "IDBDatabase",
+    "IDBCursorWithValue",
+    "IDBCursor",
+  ]);
+
+  // https://w3c.github.io/geolocation-api/#position_error_interface
+
+  names = filterOut(names, [
+    "GeolocationPositionError",
+    "GeolocationPosition",
+    "GeolocationCoordinates",
+    "Geolocation",
+  ]);
+
+  // https://w3c.github.io/gamepad/extensions.html#gamepadhapticactuator-interface
+
+  names = filterOut(names, [
+    "GamepadHapticActuator",
+    "GamepadEvent",
+    "Gamepad",
+    "GamepadButton",
+  ]);
+
+  // 压缩
+
+  names = filterOut(names, ["DecompressionStream", "CompressionStream"]);
+
+  // 废弃
+
+  names = filterOut(names, [
+    "DOMError",
+    "BatteryManager",
+    "external",
+    "defaultStatus",
+    "defaultstatus",
+    "captureEvents",
+    "releaseEvents",
+  ]);
+
+  // https://www.w3.org/TR/WebCryptoAPI/#crypto-interface
+
+  names = filterOut(names, ["Crypto"]);
+
+  // https://w3c.github.io/clipboard-apis/#dom-clipboard-write
+
+  names = filterOut(names, ["ClipboardItem", "ClipboardEvent"]);
+
+  // https://w3c.github.io/mediacapture-fromelement/#the-canvascapturemediastreamtrack
+
+  names = filterOut(names, ["CanvasCaptureMediaStreamTrack"]);
+
+  // https://w3c.github.io/mediacapture-record/#blobevent-section
+
+  names = filterOut(names, ["BlobEvent"]);
+
+  // 安装提示
+
+  names = filterOut(names, ["BeforeInstallPromptEvent"]);
+
+  // https://www.w3.org/TR/DOM-Level-3-XPath/xpath.html#XPathResult
+
+  names = filterOut(names, [
+    "XPathResult",
+    "XPathExpression",
+    "XPathEvaluator",
+  ]);
+
+  // https://w3c.github.io/DOM-Parsing/#the-xmlserializer-interface
+
+  names = filterOut(names, ["XMLSerializer"]);
+
+  // https://xhr.spec.whatwg.org/
+
+  names = filterOut(names, [
+    "XMLHttpRequestUpload",
+    "XMLHttpRequestEventTarget",
+    "XMLHttpRequest",
+    "ProgressEvent",
+    "FormData",
+  ]);
+
+  // https://w3c.github.io/uievents/#interface-wheelevent
+
+  names = filterOut(names, [
+    "WheelEvent",
+    "UIEvent",
+    "MouseEvent",
+    "KeyboardEvent",
+    "InputEvent",
+    "FocusEvent",
+    "CompositionEvent",
+  ]);
+
+  // https://wicg.github.io/visual-viewport/#the-visualviewport-interface
+
+  names = filterOut(names, ["VisualViewport"]);
+
+  // https://w3c.github.io/webvtt/#dom-vttcue-vttcue
+
+  names = filterOut(names, ["VTTCue"]);
+
+  // https://url.spec.whatwg.org/#urlsearchparams
+
+  names = filterOut(names, ["URLSearchParams", "URL"]);
+
+  // https://dom.spec.whatwg.org/#interface-treewalker
+
+  names = filterOut(names, [
+    "TreeWalker",
+    "StaticRange",
+    "NodeList",
+    "NodeIterator",
+    "NodeFilter",
+    "NamedNodeMap",
+    "MutationRecord",
+    "MutationObserver",
+    "MutationEvent",
+    "EventTarget",
+    "Event",
+    "DOMTokenList",
+    "CustomEvent",
+    "AbortSignal",
+    "AbortController",
+    "event",
+  ]);
+
+  // https://drafts.csswg.org/css-transitions/#interface-transitionevent
+
+  names = filterOut(names, ["TransitionEvent"]);
+
+  // https://w3c.github.io/touch-events/#touchlist-interface
+
+  names = filterOut(names, ["TouchList", "TouchEvent", "Touch", "TextEvent"]);
+
+  // https://w3c.github.io/longtasks/#sec-TaskAttributionTiming
+
+  names = filterOut(names, ["TaskAttributionTiming"]);
+
+  // https://drafts.csswg.org/cssom/#the-stylesheetlist-interface
+
+  names = filterOut(names, [
+    "StyleSheetList",
+    "StyleSheet",
+    "StylePropertyMapReadOnly",
+    "StylePropertyMap",
+    "getComputedStyle",
+  ]);
+
+  // https://w3c.github.io/selection-api/#selection-interface
+
+  names = filterOut(names, ["Selection", "getSelection"]);
+
+  // https://w3c.github.io/webappsec-csp/2/#firing-securitypolicyviolationevent-events
+
+  names = filterOut(names, ["SecurityPolicyViolationEvent"]);
+
+  // https://w3c.github.io/webappsec-secure-contexts/
+
+  names = filterOut(names, ["isSecureContext"]);
+
+  // https://svgwg.org/svg2-draft/types.html#InterfaceSVGUnitTypes
+
+  names = filterOut(names, [
+    "SVGUnitTypes",
+    "SVGTransformList",
+    "SVGTransform",
+    "SVGStringList",
+    "SVGRect",
+    "SVGPreserveAspectRatio",
+    "SVGPointList",
+    "SVGPoint",
+    "SVGNumberList",
+    "SVGNumber",
+    "SVGMatrix",
+    "SVGLengthList",
+    "SVGLength",
+    "SVGAnimatedTransformList",
+    "SVGAnimatedString",
+    "SVGAnimatedRect",
+    "SVGAnimatedPreserveAspectRatio",
+    "SVGAnimatedNumberList",
+    "SVGAnimatedNumber",
+    "SVGAnimatedLengthList",
+    "SVGAnimatedLength",
+    "SVGAnimatedInteger",
+    "SVGAnimatedEnumeration",
+    "SVGAnimatedBoolean",
+    "SVGAnimatedAngle",
+    "SVGAngle",
+    "origin",
+  ]);
+
+  // https://fetch.spec.whatwg.org/#response-class
+
+  names = filterOut(names, ["Response", "Request", "Headers"]);
+
+  // https://drafts.csswg.org/resize-observer/#resize-observer-entry-interface
+
+  names = filterOut(names, ["ResizeObserverEntry", "ResizeObserver"]);
+
+  // https://w3c.github.io/reporting/#dom-reportingobserver-reportingobserver
+
+  names = filterOut(names, ["ReportingObserver"]);
+
+  // https://tools.ietf.org/html/rfc7233#section-3.1
+
+  names = filterOut(names, ["Range"]);
+
+  // https://www.w3.org/TR/pointerevents2/#pointerevent-interface
+
+  names = filterOut(names, ["PointerEvent"]);
+
+  // https://www.w3.org/TR/navigation-timing/#performancetiming
+
+  names = filterOut(names, [
+    "PerformanceTiming",
+    "PerformanceServerTiming",
+    "PerformanceResourceTiming",
+    "PerformancePaintTiming",
+    "PerformanceObserverEntryList",
+    "PerformanceObserver",
+    "PerformanceNavigationTiming",
+    "PerformanceNavigation",
+    "PerformanceMeasure",
+    "PerformanceMark",
+    "PerformanceLongTaskTiming",
+    "PerformanceEventTiming",
+    "PerformanceEntry",
+    "PerformanceElementTiming",
+    "Performance",
+    "performance",
+  ]);
+
+  // https://drafts.csswg.org/cssom-view/#the-screen-interface
+
+  names = filterOut(names, [
+    "Screen",
+    "screen",
+    "MediaQueryListEvent",
+    "MediaQueryList",
+    "MediaList",
+    "LayoutShift",
+    "innerWidth",
+    "innerHeight",
+    "scrollX",
+    "pageXOffset",
+    "scrollY",
+    "pageYOffset",
+    "visualViewport",
+    "screenX",
+    "screenY",
+    "outerWidth",
+    "outerHeight",
+    "devicePixelRatio",
+    "offscreenBuffering",
+    "screenLeft",
+    "screenTop",
+    "matchMedia",
+    "moveTo",
+    "moveBy",
+    "resizeTo",
+    "resizeBy",
+    "scroll",
+    "scrollTo",
+    "scrollBy",
+  ]);
+
+  // https://webplatform.github.io/docs/dom/clientInformation/
+
+  names = filterOut(names, ["clientInformation", "styleMedia"]);
+
+  // https://wicg.github.io/largest-contentful-paint/#sec-largest-contentful-paint-interface
+
+  names = filterOut(names, ["LargestContentfulPaint"]);
+
+  // https://drafts.csswg.org/web-animations-1/#the-keyframeeffect-interface
+
+  names = filterOut(names, [
+    "KeyframeEffect",
+    "AnimationEvent",
+    "AnimationEffect",
+    "Animation",
+  ]);
+
+  // https://w3c.github.io/IntersectionObserver/#intersection-observer-entry
+
+  names = filterOut(names, [
+    "IntersectionObserverEntry",
+    "IntersectionObserver",
+  ]);
+
+  // https://wicg.github.io/input-device-capabilities/#dom-uievent-sourcecapabilities
+
+  names = filterOut(names, ["InputDeviceCapabilities"]);
+
+  // https://www.w3.org/TR/requestidlecallback/
+
+  names = filterOut(names, [
+    "IdleDeadline",
+    "requestidlecallback",
+    "requestIdleCallback",
+    "cancelIdleCallback",
+  ]);
+
+  // https://drafts.csswg.org/css-font-loading/#dom-fontfacesetloadevent-fontfacesetloadevent
+
+  names = filterOut(names, ["FontFaceSetLoadEvent", "FontFace"]);
+
+  // https://w3c.github.io/FileAPI/#dfn-filereader
+
+  names = filterOut(names, ["FileReader", "FileList", "File", "Blob"]);
+
+  // https://drafts.fxtf.org/geometry/#dom-domrectreadonly-domrectreadonly
+
+  names = filterOut(names, [
+    "DOMRectReadOnly",
+    "DOMRectList",
+    "DOMRect",
+    "DOMQuad",
+    "DOMPointReadOnly",
+    "DOMPoint",
+    "DOMParser",
+    "DOMMatrixReadOnly",
+    "DOMMatrix",
+    "DOMImplementation",
+    "DOMException",
+  ]);
+
+  // https://drafts.css-houdini.org/css-typed-om-1/#cssvariablereferencevalue
+
+  names = filterOut(names, [
+    "CSSVariableReferenceValue",
+    "CSSUnparsedValue",
+    "CSSUnitValue",
+    "CSSTranslate",
+    "CSSTransformValue",
+    "CSSTransformComponent",
+    "CSSSupportsRule",
+    "CSSStyleValue",
+    "CSSStyleSheet",
+    "CSSStyleRule",
+    "CSSStyleDeclaration",
+    "CSSSkewY",
+    "CSSSkewX",
+    "CSSSkew",
+    "CSSScale",
+    "CSSRuleList",
+    "CSSRule",
+    "CSSRotate",
+    "CSSPositionValue",
+    "CSSPerspective",
+    "CSSPageRule",
+    "CSSNumericValue",
+    "CSSNumericArray",
+    "CSSNamespaceRule",
+    "CSSMediaRule",
+    "CSSMatrixComponent",
+    "CSSMathValue",
+    "CSSMathSum",
+    "CSSMathProduct",
+    "CSSMathNegate",
+    "CSSMathMin",
+    "CSSMathMax",
+    "CSSMathInvert",
+    "CSSKeywordValue",
+    "CSSKeyframesRule",
+    "CSSKeyframeRule",
+    "CSSImportRule",
+    "CSSImageValue",
+    "CSSGroupingRule",
+    "CSSFontFaceRule",
+    "CSS",
+    "CSSConditionRule",
+  ]);
+
+  console.log(names);
 </script>
