@@ -1,0 +1,45 @@
+<style>
+  .keywords {
+    color: #569cd6;
+  }
+  .whitespace {
+    color: #dcdcaa;
+  }
+  .indentifier {
+    color: #dcdcaa;
+  }
+  .punctuator {
+    color: skyblue;
+  }
+</style>
+<pre id="container"></pre>
+<script>
+  const source = `function sleep(t) {
+    return new Promise(function(resolve) {
+      setTimeout(resolve, t);
+    });
+  }`;
+
+  const regex = /(function|return|new)|([ \r\n\t]+)|([a-zA-Z][a-zA-Z0-9]*)|([\(\)\{\}\,\;])/g;
+  const dictionary = ["keywords", "whitespace", "indentifier", "punctuator"];
+  let token = null;
+  let lastIndex = 0;
+
+  const container = document.querySelector("#container");
+
+  do {
+    lastIndex = regex.lastIndex;
+    token = regex.exec(source);
+    if (!token) {
+      break;
+    }
+    const text = document.createElement("span");
+    text.textContent = token[0];
+    for (let i = 1; i < 5; i++) {
+      if (token[i]) {
+        text.classList.add(`${dictionary[i - 1]}`);
+      }
+    }
+    container.appendChild(text);
+  } while (token);
+</script>
