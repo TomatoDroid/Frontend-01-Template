@@ -1,0 +1,18 @@
+<script>
+  function find(source, pattern) {
+    for (let i = 0; i < source.length; i++) {
+      let matched = true;
+      for (let j = 0; j < pattern.length; j++) {
+        console.log(source[i + j], pattern[j]);
+        if (source[i + j] !== pattern[j]) {
+          matched = false;
+          break;
+        }
+      }
+      if (matched) {
+        return true;
+      }
+    }
+  }
+  console.log(find("BBC ABCDAB ABCDABCDABDE", "ABCDABD"));
+</script>

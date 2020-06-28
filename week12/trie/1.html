@@ -1,39 +1,4 @@
 <script>
-  class Trie {
-    constructor() {
-      this.root = Object.create(null);
-      //   this.root = new Map();
-    }
-    insert(word) {
-      let node = this.root;
-      for (let c of word) {
-        if (!node[c]) {
-          node[c] = Object.create(null);
-        }
-        node = node[c];
-      }
-      if (!("$" in node)) {
-        node["$"] = 0;
-      }
-      node["$"]++;
-    }
-    most() {
-      let max = 0;
-      let maxWord = null;
-      let visit = (node, word) => {
-        if (node.$ && node.$ > max) {
-          max = node.$;
-          maxWord = word;
-        }
-        for (let p in word) {
-          visit(node[p], word + p);
-        }
-      };
-      visit(this.root, "");
-      console.log(this.root);
-    }
-  }
-
   function randomWrod(length) {
     let s = "";
     for (let i = 0; i < length; i++) {
@@ -42,10 +7,48 @@
     return s;
   }
 
+  class Trie {
+    constructor() {
+      this.root = Object.create(null);
+    }
+    insert(word) {
+      let node = this.root;
+      for (let w of word) {
+        if (!node[w]) {
+          node[w] = Object.create(null);
+        }
+        node = node[w];
+      }
+      if (!("$" in node)) {
+        node["$"] = 0;
+      }
+      node["$"]++;
+    }
+    most() {
+      let max = 0;
+      let maxWord = "";
+      let visit = (node, word) => {
+        if (node.$ && node.$ > max) {
+          max = node.$;
+          maxWord = word;
+        }
+        for (let key in node) {
+          visit(node[key], word + key);
+        }
+      };
+      visit(this.root, "");
+      return {
+        max,
+        maxWord,
+      };
+    }
+  }
+
   let trie = new Trie();
-  trie.insert(randomWrod(4));
+
   for (let i = 0; i < 100000; i++) {
     trie.insert(randomWrod(4));
   }
-  trie.most();
+
+  console.log(trie.most());
 </script>
