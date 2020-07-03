@@ -1,0 +1,95 @@
+<input id="app" type="input" />
+
+<script>
+  const handlers = new Map();
+
+  const reactives = new Map();
+
+  let usedReactivities = [];
+
+  const obj = {
+    a: 1,
+    b: 2,
+  };
+
+  function reactive(obj) {
+    if (reactives.has(obj)) {
+      return reactives.get(obj);
+    }
+
+    let proxy = new Proxy(obj, {
+      get(obj, prop) {
+        usedReactivities.push([obj, prop]);
+        if (typeof obj[prop] === "object") {
+          return reactive(obj[prop]);
+        }
+        return obj[prop];
+      },
+      set(obj, prop, val) {
+        obj[prop] = val;
+        if (handlers.get(obj)) {
+          if (handlers.get(obj).get(prop)) {
+            for (let handler of handlers.get(obj).get(prop)) {
+              handler();
+            }
+          }
+        }
+        return obj[prop];
+      },
+    });
+
+    reactives.set(obj, proxy);
+
+    return proxy;
+  }
+
+  function effect(handler) {
+    usedReactivities = [];
+    handler();
+    console.log(usedReactivities);
+    for (let usedReactivity of usedReactivities) {
+      let [obj, prop] = usedReactivity;
+      if (!handlers.has(obj)) {
+        handlers.set(obj, new Map());
+      }
+      if (!handlers.get(obj).has(prop)) {
+        handlers.get(obj).set(prop, []);
+      }
+      handlers.get(obj).get(prop).push(handler);
+    }
+  }
+
+  //   let dummy;
+
+  //   const proxy = reactive(obj);
+
+  //   effect(() => (dummy = proxy.a));
+  //   console.log(dummy);
+  //   proxy.a = 123;
+  //   console.log(dummy);
+
+  //   let deepObj = {
+  //     a: {
+  //       aa: 11,
+  //     },
+  //     b: 1,
+  //   };
+  //   let v;
+  //   let p = reactive(deepObj);
+  //   effect(() => (v = p.a.aa));
+  //   console.log(v);
+  //   p.a = {
+  //     aa: 5,
+  //   };
+  //   console.log(v);
+
+  const p = reactive({ v: 10 });
+
+  effect(() => {
+    document.getElementById("app").value = p.v;
+  });
+
+  document.getElementById("app").addEventListener("input", (e) => {
+    p.v = e.target.value;
+  });
+</script>
