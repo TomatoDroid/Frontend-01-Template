@@ -32,22 +32,22 @@
 <script>
   let dragable = document.getElementById("dragable");
 
-  let baseX = 0,
-    baseY = 0;
+  let baseX = 0;
+  let baseY = 0;
 
   dragable.addEventListener("mousedown", (event) => {
-    let startX = event.clientX,
-      startY = event.clientY;
-    let move = (event) => {
-    //   let x = baseX + event.clientX - startX,
-    //     y = baseY + event.clientY - startY;
-    //   dragable.style.transform = `translate(${x}px,${y}px)`;
-        let range = nearest(event.clientX, event.clientY)
-        
+    let startX = event.clientX;
+    let startY = event.clientY;
+    const move = (event) => {
+      let range = nearest(event.clientX, event.clientY);
+      range.insertNode(dragable);
+      // let x = event.clientX - startX + baseX;
+      // let y = event.clientY - startY + baseY;
+      // dragable.style.transform = `translate(${x}px,${y}px)`;
     };
-    let up = (event) => {
-      baseX = baseX + event.clientX - startX;
-      baseY = baseY + event.clientY - startY;
+    const up = (event) => {
+      baseX = event.clientX - startX + baseX;
+      baseY = event.clientY - startY + baseY;
       document.removeEventListener("mousemove", move);
       document.removeEventListener("mouseup", up);
     };
@@ -56,14 +56,11 @@
   });
 
   let ranges = [];
-
-  let container = document.getElementById("container");
-
-  for (let i = 0; i < container.childNodes[0].textContent.length; i++) {
+  const container = document.getElementById("container");
+  for (let i = 0; i < container.childNodes[0].length; i++) {
     let range = document.createRange();
     range.setStart(container.childNodes[0], i);
     range.setEnd(container.childNodes[0], i);
-    // console.log(range.getBoundingClientRect());
     ranges.push(range);
   }
 
@@ -73,12 +70,13 @@
     for (let range of ranges) {
       let { x, y } = range.getBoundingClientRect();
       let d = (x0 - x) ** 2 + (y0 - y) ** 2;
-
       if (d < distance) {
-        nearestRange - range;
         distance = d;
+        nearestRange = range;
       }
     }
     return nearestRange;
   }
+
+  document.addEventListener("selectstart", (event) => event.preventDefault());
 </script>
