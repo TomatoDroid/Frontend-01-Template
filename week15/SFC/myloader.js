@@ -16,8 +16,6 @@ module.exports = function (source, map) {
     }
   }
 
-  let createCode = "";
-
   let visit = (node) => {
     if (node.type === "text") {
       return JSON.stringify(node.content);
