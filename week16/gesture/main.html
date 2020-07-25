@@ -1,0 +1,40 @@
+<style>
+  div {
+    width: 100px;
+    height: 100px;
+    background-color: lightblue;
+  }
+</style>
+<body>
+  <div></div>
+</body>
+<script src="./gesture.js"></script>
+<script>
+  window.addEventListener("contextmenu", (event) => event.preventDefault());
+  document.addEventListener("selectstart", (event) => event.preventDefault());
+  document.addEventListener("touchmove", (event) => event.preventDefault(), {
+    passive: false,
+  });
+
+  const rect = document.getElementsByTagName("div")[0];
+
+  enableGesture(rect);
+
+  let x = 0;
+  let y = 0;
+
+  rect.addEventListener("tap", (event) => {
+    console.log(event);
+  });
+
+  rect.addEventListener("pan", (event) => {
+    rect.style.transform = `translate(${
+      x + event.detail.clientX - event.detail.startX
+    }px, ${y + event.detail.clientY - event.detail.startY}px)`;
+  });
+
+  rect.addEventListener("panend", (event) => {
+    x = x + event.detail.clientX - event.detail.startX;
+    y = y + event.detail.clientY - event.detail.startY;
+  });
+</script>
