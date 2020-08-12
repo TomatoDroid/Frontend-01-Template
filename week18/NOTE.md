@@ -9,3 +9,6 @@ Server
  Client
  - debugger: vscode devtool
  - source map
+
+ Test
+ - nyc
