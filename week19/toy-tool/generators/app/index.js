@@ -32,8 +32,20 @@ module.exports = class extends Generator {
       this.destinationPath("src/index.html")
     );
     this.fs.copyTpl(
+      this.templatePath("main.test.js"),
+      this.destinationPath("test/main.test.js")
+    );
+    this.fs.copyTpl(
       this.templatePath("webpack.config.js"),
       this.destinationPath("webpack.config.js")
+    );
+    this.fs.copyTpl(
+      this.templatePath(".babelrc"),
+      this.destinationPath(".babelrc")
+    );
+    this.fs.copyTpl(
+      this.templatePath(".nycrc"),
+      this.destinationPath(".nycrc")
     );
     this.npmInstall(
       [
@@ -44,6 +56,7 @@ module.exports = class extends Generator {
         "babel-loader",
         "@babel/core",
         "@babel/preset-env",
+        "@babel/register",
         "@babel/plugin-transform-react-jsx",
         "mocha",
         "nyc",
