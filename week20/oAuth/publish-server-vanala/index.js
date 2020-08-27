@@ -9,25 +9,56 @@ const server = http.createServer((req, res) => {
     return auth(req, res);
   }
 
-  //   let filename = matched && matched[1];
-  //   if (!filename) {
-  //     return;
-  //   }
+  if (!req.url.match(/^\/?/)) {
+    res.writeHead(404, {
+      "Content-Type": "text/plain",
+    });
+    res.end("not found");
+    return;
+  }
 
-  let writestream = unzipper.Extract({ path: "../server/public" });
-  //   req.pipe(writestream);
+  const options = {
+    hostname: "api.github.com",
+    // port: 443,
+    path: `/user`,
+    method: "GET",
+    headers: {
+      Authorization: `token ${req.headers.token}`,
+      "User-Agent": "lz-toy-publish",
+    },
+  };
 
-  req.on("data", (trunk) => {
-    writestream.write(trunk);
-  });
-  req.on("end", (trunk) => {
-    writestream.end(trunk);
+  const request = https.request(options, (response) => {
+    let body = "";
+    response.on("data", (d) => {
+      body += d.toString();
+    });
+    response.on("end", () => {
+      let user = JSON.parse(body);
+      console.log(user);
+      // 权限检查
+      let writestream = unzipper.Extract({ path: "../server/public" });
+
+      // req.pipe(writestream);
+
+      req.on("data", (trunk) => {
+        writestream.write(trunk);
+      });
+      req.on("end", (trunk) => {
+        writestream.end(trunk);
+      });
+
+      req.on("end", () => {
+        res.writeHead(200, { "Content-Type": "text/plain" });
+        res.end("ok");
+      });
+    });
   });
 
-  req.on("end", () => {
-    res.writeHead(200, { "Content-Type": "text/plain" });
-    res.end("ok");
+  request.on("error", (e) => {
+    console.error(e);
   });
+  request.end();
 });
 
 function auth(req, res) {
@@ -49,12 +80,21 @@ function auth(req, res) {
   const request = https.request(options, (response) => {
     response.on("data", (d) => {
       let result = d.toString().match(/access_token=([^&]+)/);
-      let token = result[1];
-      res.writeHead(200, {
-        "Content-Type": "text/plain",
-        access_token: token,
-      });
-      res.end("ok");
+      if (result) {
+        let token = result[1];
+        res.writeHead(200, {
+          "Content-Type": "text/html",
+          access_token: token,
+        });
+        res.end(
+          `<a href="http://localhost:8080/publish?token=${token}">publish</a>`
+        );
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "text/plain",
+        });
+        res.end("error");
+      }
     });
   });
 
